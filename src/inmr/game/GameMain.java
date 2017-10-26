@@ -4,9 +4,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -73,7 +76,8 @@ public class GameMain {
 				frontLayer.translate(insets.left, insets.top);
 
 				gg.update(backLayer, midLayer, frontLayer, uiLayer, window);
-
+				
+				
 				bs.show();
 				backLayer.dispose();
 				midLayer.dispose();

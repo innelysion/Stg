@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class StgObjects {
 
 	// Image
-	public int resource;
+	public String resName;
 	public boolean active = true;
 	public DrawLayer layer = DrawLayer.Mid;
 	public int dZ = 0;
@@ -30,8 +30,6 @@ public class StgObjects {
 	}
 
 	StgObjects(int qty, int id) {
-
-
 
 		if (qty <= 0) {
 			qty = 1;

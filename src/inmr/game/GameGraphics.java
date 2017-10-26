@@ -3,39 +3,46 @@ package inmr.game;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class GameGraphics {
 
-	ArrayList<BufferedImage> ResList = new ArrayList<BufferedImage>();
-	ArrayList<BufferedImage> stageResList = new ArrayList<BufferedImage>();
+	HashMap<String, BufferedImage> imageStorage = new HashMap<String, BufferedImage>();
 	ArrayList<StgObjects> drawlist = new ArrayList<StgObjects>();
+	File[] f;
 
 	GameGraphics() {
-
-
-
+		loadResource();
 	}
 
 	public void update(Graphics2D backLayer, Graphics2D midLayer, Graphics2D frontLayer, Graphics2D uiLayer,
 			JFrame window) {
-
-	}
-
-	public void loadImage(String filename) {
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(getClass().getResource(filename));
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (String key : imageStorage.keySet()){
+			backLayer.drawImage(imageStorage.get(key), 100, 100, window);
 		}
-		stageResList.add(image);
+		for (int i = 0; i < f.length; i++){
+			backLayer.drawString(f[i].getName(), 200, 200 + 20 * i);
+		}
 	}
 
+	public void loadResource() {
+		File dir = new File(getClass().getResource("image/base").getPath());
+		f = dir.listFiles();
+//		for (String name : dir.list()) {
+//			try {
+//				imageStorage.put(name, ImageIO.read(getClass().getResource("image/base/" + name)));
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				continue;
+//			}
+//		}
+	}
 
 	public void drawKoma(Graphics2D g, JFrame w, BufferedImage image, int wblock, int hblock, int index, double x,
 			double y, float opacity) {
