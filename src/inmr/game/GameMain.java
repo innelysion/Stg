@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 public class GameMain {
 
 	public static void main(String[] args) {
-		// 防止头帧图像缓存出错
+		// 防止头帧图像缓存出错test
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GameMain Game = new GameMain();
