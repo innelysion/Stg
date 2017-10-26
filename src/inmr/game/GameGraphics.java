@@ -4,31 +4,38 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class GameGraphics {
 
+	ArrayList<BufferedImage> ResList = new ArrayList<BufferedImage>();
+	ArrayList<BufferedImage> stageResList = new ArrayList<BufferedImage>();
+	ArrayList<StgObjects> drawlist = new ArrayList<StgObjects>();
+
 	GameGraphics() {
+
+
 
 	}
 
 	public void update(Graphics2D backLayer, Graphics2D midLayer, Graphics2D frontLayer, Graphics2D uiLayer,
 			JFrame window) {
 
-
 	}
 
-	public BufferedImage loadImage(String filename) {
+	public void loadImage(String filename) {
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(getClass().getResource(filename));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return image;
+		stageResList.add(image);
 	}
+
 
 	public void drawKoma(Graphics2D g, JFrame w, BufferedImage image, int wblock, int hblock, int index, double x,
 			double y, float opacity) {
