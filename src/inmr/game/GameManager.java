@@ -2,12 +2,12 @@ package inmr.game;
 
 public class GameManager {
 
+	GameData gd;
 	GameGraphics gg;
-
-
-	GameManager(GameGraphics graphics) {
+	
+	GameManager(GameData gamedata, GameGraphics graphics) {
+		gd = gamedata;
 		gg = graphics;
-
 	}
 
 	public void update(){

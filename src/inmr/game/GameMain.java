@@ -1,5 +1,6 @@
 package inmr.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -27,13 +28,14 @@ public class GameMain {
 	BufferStrategy bs;
 	Insets insets;
 
-	Input input = new Input();
+	Input input;
 	JFrame window = new JFrame("STG");
 	Timer timer = new Timer();
 	MainLoop loop = new MainLoop();
 
-	GameGraphics gg = new GameGraphics();
-	GameManager mgr = new GameManager(gg);
+	GameData data = new GameData();
+	GameGraphics gg = new GameGraphics(data);
+	GameManager mgr = new GameManager(data, gg);
 
 	GameMain() {
 
@@ -42,6 +44,7 @@ public class GameMain {
 		window.setResizable(false);
 		window.setVisible(true);
 		insets = window.getInsets();
+		input = new Input(insets);
 		int sizeW = GameSetting.WINDOW_W + insets.left + insets.right;
 		int sizeH = GameSetting.WINDOW_H + insets.top + insets.bottom;
 		window.setSize(sizeW, sizeH);
@@ -65,18 +68,22 @@ public class GameMain {
 			mgr.update();
 
 			Graphics g = bs.getDrawGraphics();
-			Graphics2D backLayer = (Graphics2D) g; // Background
-			Graphics2D midLayer = (Graphics2D) g; // Main
-			Graphics2D frontLayer = (Graphics2D) g; // Effects
-			Graphics2D uiLayer = (Graphics2D) g; // UI
+			Graphics2D backLayer = (Graphics2D) g;
+			Graphics2D midLayer = (Graphics2D) g;
+			Graphics2D frontLayer = (Graphics2D) g;
+			Graphics2D uiLayer = (Graphics2D) g;
 
 			if (bs.contentsLost() == false) {
 				backLayer.translate(insets.left, insets.top);
 				midLayer.translate(insets.left, insets.top);
 				frontLayer.translate(insets.left, insets.top);
+				uiLayer.translate(insets.left, insets.top);
+				backLayer.clearRect(0, 0, GameSetting.WINDOW_W, GameSetting.WINDOW_H);
+				midLayer.clearRect(0, 0, GameSetting.WINDOW_W, GameSetting.WINDOW_H);
+				frontLayer.clearRect(0, 0, GameSetting.WINDOW_W, GameSetting.WINDOW_H);
+				uiLayer.clearRect(0, 0, GameSetting.WINDOW_W, GameSetting.WINDOW_H);
 
 				gg.update(backLayer, midLayer, frontLayer, uiLayer, window);
-				
 				
 				bs.show();
 				backLayer.dispose();

@@ -2,16 +2,16 @@ package inmr.game;
 
 import java.util.ArrayList;
 
-public class StgObjects {
+public abstract class StgObjects {
 
+	private int unit = 0;
 	// Image
 	public String resName;
+	public int wBlock = -1;
+	public int hBlock = -1;
 	public boolean active = true;
 	public DrawLayer layer = DrawLayer.Mid;
-	public int dZ = 0;
 	public ArrayList<Integer> index = new ArrayList<Integer>();
-	public ArrayList<Integer> wBlock = new ArrayList<Integer>();
-	public ArrayList<Integer> hBlock = new ArrayList<Integer>();
 	// Position
 	public ArrayList<Boolean> visible = new ArrayList<Boolean>();
 	public ArrayList<Float> opacity = new ArrayList<Float>();
@@ -24,54 +24,65 @@ public class StgObjects {
 	public ArrayList<Double> accY = new ArrayList<Double>();
 	public ArrayList<Double> angle = new ArrayList<Double>();
 	public ArrayList<Double> rotation = new ArrayList<Double>();
+	// Hit
+	public ArrayList<Boolean> hitable = new ArrayList<Boolean>();
+	public ArrayList<Integer> sizeW = new ArrayList<Integer>();
+	public ArrayList<Integer> sizeH = new ArrayList<Integer>();
+	public ArrayList<Integer> roundHitRad = new ArrayList<Integer>();
+	public ArrayList<Integer> boxHitW = new ArrayList<Integer>();
+	public ArrayList<Integer> boxHitH = new ArrayList<Integer>();
 
-	StgObjects(int id) {
-		this(1, id);
+	StgObjects() {
+		addUnit(1);
 	}
 
-	StgObjects(int qty, int id) {
-
-		if (qty <= 0) {
-			qty = 1;
+	public void kill(int i) {
+		if (i < unit) {
+			index.set(i, -1);
+			visible.set(i, false);
+			opacity.set(i, 1f);
+			dX.set(i, 0d);
+			dY.set(i, 0d);
+			spdX.set(i, 0d);
+			spdY.set(i, 0d);
+			accX.set(i, 0d);
+			accY.set(i, 0d);
+			angle.set(i, 0d);
+			rotation.set(i, 0d);
+			hitable.set(i, false);
+			sizeW.set(i, 0);
+			sizeH.set(i, 0);
+			roundHitRad.set(i, 0);
+			boxHitW.set(i, 0);
+			boxHitH.set(i, 0);
 		}
+	}
 
+	public void addUnit(int qty) {
+		unit += qty;
 		for (int i = 0; i < qty; i++) {
-			index.add(-1);
-			wBlock.add(-1);
-			hBlock.add(-1);
-
+			index.add(0);
 			visible.add(false);
-			opacity.add(1f);
+			opacity.add(1.0f);
 			dX.add(0d);
 			dY.add(0d);
-
 			spdX.add(0d);
 			spdY.add(0d);
 			accX.add(0d);
 			accY.add(0d);
-
 			angle.add(0d);
 			rotation.add(0d);
+			hitable.add(false);
+			sizeW.add(0);
+			sizeH.add(0);
+			roundHitRad.add(0);
+			boxHitW.add(0);
+			boxHitH.add(0);
 		}
 	}
-
-	public void reset(int i) {
-		index.set(i, -1);
-		wBlock.set(i, -1);
-		hBlock.set(i, -1);
-
-		visible.set(i, false);
-		opacity.set(i, 1f);
-		dX.set(i, 0d);
-		dY.set(i, 0d);
-
-		spdX.set(i, 0d);
-		spdY.set(i, 0d);
-		accX.set(i, 0d);
-		accY.set(i, 0d);
-
-		angle.set(i, 0d);
-		rotation.set(i, 0d);
+	
+	public int getUnitNumber(){
+		return unit;
 	}
 
 	public void move(int i, MoveType type) {
