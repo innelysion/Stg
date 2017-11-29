@@ -15,8 +15,8 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 
 	static boolean LEFT, UP, RIGHT, DOWN, UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT;
 	static boolean MLC, MMC, MRC;
-	static Dir8 DIR8 = Dir8.NONE;
-	static Dir4 DIR4 = Dir4.NONE;
+	static D8 DIR8 = D8.NONE;
+	static D4 DIR4 = D4.NONE;
 	static int MX, MY, MW;
 
 	private boolean MLCR, MMCR, MRCR;
@@ -30,38 +30,38 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 
 	private void dirCheck() {
 		if (LEFT && UP && RIGHT && DOWN) {
-			DIR8 = Dir8.NONE;
-			DIR4 = Dir4.NONE;
+			DIR8 = D8.NONE;
+			DIR4 = D4.NONE;
 		} else if (LEFT && UP && RIGHT) {
-			DIR8 = Dir8.UP;
-			DIR4 = Dir4.UP;
+			DIR8 = D8.UP;
+			DIR4 = D4.UP;
 		} else if (UP && RIGHT && DOWN) {
-			DIR8 = Dir8.RIGHT;
-			DIR4 = Dir4.RIGHT;
+			DIR8 = D8.RIGHT;
+			DIR4 = D4.RIGHT;
 		} else if (RIGHT && DOWN && LEFT) {
-			DIR8 = Dir8.DOWN;
-			DIR4 = Dir4.DOWN;
+			DIR8 = D8.DOWN;
+			DIR4 = D4.DOWN;
 		} else if (DOWN && LEFT && UP) {
-			DIR8 = Dir8.LEFT;
-			DIR4 = Dir4.LEFT;
+			DIR8 = D8.LEFT;
+			DIR4 = D4.LEFT;
 		} else if (LEFT && UP) {
-			DIR8 = Dir8.UPLEFT;
-			DIR4 = Dir4.LEFT;
+			DIR8 = D8.UPLEFT;
+			DIR4 = D4.LEFT;
 		} else if (UP && RIGHT) {
-			DIR8 = Dir8.UPRIGHT;
-			DIR4 = Dir4.RIGHT;
+			DIR8 = D8.UPRIGHT;
+			DIR4 = D4.RIGHT;
 		} else if (RIGHT && DOWN) {
-			DIR8 = Dir8.DOWNRIGHT;
-			DIR4 = Dir4.RIGHT;
+			DIR8 = D8.DOWNRIGHT;
+			DIR4 = D4.RIGHT;
 		} else if (DOWN && LEFT) {
-			DIR8 = Dir8.DOWNLEFT;
-			DIR4 = Dir4.LEFT;
+			DIR8 = D8.DOWNLEFT;
+			DIR4 = D4.LEFT;
 		} else if (UP && DOWN) {
-			DIR8 = Dir8.NONE;
-			DIR4 = Dir4.NONE;
+			DIR8 = D8.NONE;
+			DIR4 = D4.NONE;
 		} else if (LEFT) {
-			DIR8 = Dir8.LEFT;
-			DIR4 = Dir4.LEFT;
+			DIR8 = D8.LEFT;
+			DIR4 = D4.LEFT;
 			if (!RIGHT) {
 				right_first = false;
 			}
@@ -69,15 +69,15 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 				left_first = true;
 			}
 			if (RIGHT && left_first) {
-				DIR8 = Dir8.RIGHT;
-				DIR4 = Dir4.RIGHT;
+				DIR8 = D8.RIGHT;
+				DIR4 = D4.RIGHT;
 			}
 		} else if (UP) {
-			DIR8 = Dir8.UP;
-			DIR4 = Dir4.UP;
+			DIR8 = D8.UP;
+			DIR4 = D4.UP;
 		} else if (RIGHT) {
-			DIR8 = Dir8.RIGHT;
-			DIR4 = Dir4.RIGHT;
+			DIR8 = D8.RIGHT;
+			DIR4 = D4.RIGHT;
 			if (!LEFT) {
 				left_first = false;
 			}
@@ -85,17 +85,17 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 				right_first = true;
 			}
 			if (LEFT && right_first) {
-				DIR8 = Dir8.LEFT;
-				DIR4 = Dir4.LEFT;
+				DIR8 = D8.LEFT;
+				DIR4 = D4.LEFT;
 			}
 		} else if (DOWN) {
-			DIR8 = Dir8.DOWN;
-			DIR4 = Dir4.DOWN;
+			DIR8 = D8.DOWN;
+			DIR4 = D4.DOWN;
 		} else {
 			left_first = false;
 			right_first = false;
-			DIR8 = Dir8.NONE;
-			DIR4 = Dir4.NONE;
+			DIR8 = D8.NONE;
+			DIR4 = D4.NONE;
 		}
 	}
 
@@ -238,28 +238,28 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
-	
-	public boolean MLCR(){
+
+	public boolean MLCR() {
 		boolean r = false;
-		if (MLCR){
+		if (MLCR) {
 			MLCR = false;
 			r = true;
 		}
 		return r;
 	}
-	
-	public boolean MMCR(){
+
+	public boolean MMCR() {
 		boolean r = false;
-		if (MMCR){
+		if (MMCR) {
 			MMCR = false;
 			r = true;
 		}
 		return r;
 	}
-	
-	public boolean MRCR(){
+
+	public boolean MRCR() {
 		boolean r = false;
-		if (MRCR){
+		if (MRCR) {
 			MRCR = false;
 			r = true;
 		}
@@ -268,10 +268,10 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 
 }
 
-enum Dir4 {
+enum D4 {
 	NONE, LEFT, UP, RIGHT, DOWN
 }
 
-enum Dir8 {
+enum D8 {
 	NONE, LEFT, UPLEFT, UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT
 }

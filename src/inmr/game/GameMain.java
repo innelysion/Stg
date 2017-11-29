@@ -1,23 +1,18 @@
 package inmr.game;
 
-import java.awt.Color;
+import java.awt.Insets;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class GameMain {
 
 	public static void main(String[] args) {
-		// 防止第一帧图像缓存出错
+		// 防止第一帧图像缓存器中线程出错
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GameMain Game = new GameMain();
@@ -33,7 +28,7 @@ public class GameMain {
 	MainLoop loop = new MainLoop(); // 主循环定时任务
 
 	// 游戏管理器
-	GameManager mgr = new GameManager(); 
+	GameManager mgr = new GameManager();
 
 	GameMain() {
 
@@ -42,11 +37,11 @@ public class GameMain {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.setVisible(true);
-		insets = window.getInsets();
+		insets = window.getInsets(); // 获取边框
 		int sizeW = GameSetting.WINDOW_W + insets.left + insets.right;
 		int sizeH = GameSetting.WINDOW_H + insets.top + insets.bottom;
-		window.setSize(sizeW, sizeH);
-		window.setLocationRelativeTo(null);
+		window.setSize(sizeW, sizeH); // 设置宽高
+		window.setLocationRelativeTo(null); // 居中显示
 
 		// 图像缓存
 		window.createBufferStrategy(2);
