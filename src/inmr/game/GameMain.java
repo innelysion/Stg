@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 public class GameMain {
 
 	public static void main(String[] args) {
-		// 防止头帧图像缓存出错test
+		// 防止第一帧图像缓存出错
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GameMain Game = new GameMain();
@@ -25,55 +25,62 @@ public class GameMain {
 		});
 	}
 
-	BufferStrategy bs;
-	Insets insets;
+	BufferStrategy bs; // 图像缓存
+	Insets insets; // 窗体边框
+	Input input = new Input(); // 输入系统
+	JFrame window = new JFrame("STG"); // JFrame窗体
+	Timer timer = new Timer(); // 定时器
+	MainLoop loop = new MainLoop(); // 主循环定时任务
 
-	Input input;
-	JFrame window = new JFrame("STG");
-	Timer timer = new Timer();
-	MainLoop loop = new MainLoop();
-
-	GameData data = new GameData();
-	GameGraphics gg = new GameGraphics(data);
-	GameManager mgr = new GameManager(data, gg);
+	// 游戏管理器
+	GameManager mgr = new GameManager(); 
 
 	GameMain() {
 
+		// 窗体设置
 		window.setIgnoreRepaint(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.setVisible(true);
 		insets = window.getInsets();
-		input = new Input(insets);
 		int sizeW = GameSetting.WINDOW_W + insets.left + insets.right;
 		int sizeH = GameSetting.WINDOW_H + insets.top + insets.bottom;
 		window.setSize(sizeW, sizeH);
 		window.setLocationRelativeTo(null);
 
+		// 图像缓存
 		window.createBufferStrategy(2);
 		bs = window.getBufferStrategy();
 
+		// 输入系统应用至窗体
 		window.addMouseListener(input);
 		window.addMouseMotionListener(input);
 		window.addKeyListener(input);
 		window.addMouseWheelListener(input);
 
+		// 间隔17毫秒(近似60fps)主循环
 		timer.schedule(loop, 17, 17);
 	}
 
 	class MainLoop extends TimerTask {
 		public void run() {
 
+			// 更新输入
 			input.update(window);
-			mgr.update();
-
-			Graphics g = bs.getDrawGraphics();
-			Graphics2D backLayer = (Graphics2D) g;
-			Graphics2D midLayer = (Graphics2D) g;
-			Graphics2D frontLayer = (Graphics2D) g;
-			Graphics2D uiLayer = (Graphics2D) g;
+			// 更新游戏管理器主逻辑
+			mgr.updateLogic();
+			// 四层描绘层
+			Graphics g1 = bs.getDrawGraphics();
+			Graphics g2 = bs.getDrawGraphics();
+			Graphics g3 = bs.getDrawGraphics();
+			Graphics g4 = bs.getDrawGraphics();
+			Graphics2D backLayer = (Graphics2D) g1;
+			Graphics2D midLayer = (Graphics2D) g2;
+			Graphics2D frontLayer = (Graphics2D) g3;
+			Graphics2D uiLayer = (Graphics2D) g4;
 
 			if (bs.contentsLost() == false) {
+				// 描绘准备
 				backLayer.translate(insets.left, insets.top);
 				midLayer.translate(insets.left, insets.top);
 				frontLayer.translate(insets.left, insets.top);
@@ -82,10 +89,10 @@ public class GameMain {
 				midLayer.clearRect(0, 0, GameSetting.WINDOW_W, GameSetting.WINDOW_H);
 				frontLayer.clearRect(0, 0, GameSetting.WINDOW_W, GameSetting.WINDOW_H);
 				uiLayer.clearRect(0, 0, GameSetting.WINDOW_W, GameSetting.WINDOW_H);
-
-				gg.update(backLayer, midLayer, frontLayer, uiLayer, window);
-				
+				// 更新图像逻辑并描绘图像
+				mgr.updateGraphics(backLayer, midLayer, frontLayer, uiLayer, window);
 				bs.show();
+				// 描绘完毕释放当前帧
 				backLayer.dispose();
 				midLayer.dispose();
 				frontLayer.dispose();

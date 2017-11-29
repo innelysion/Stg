@@ -20,18 +20,18 @@ public class GameGraphics {
 
 	GameData gd;
 	private ArrayList<StgObjects> drawlist = new ArrayList<StgObjects>();
-
-	GameGraphics(GameData gamedata) {
+	
+	public void setGameData(GameData gamedata){
 		gd = gamedata;
 	}
 
 	public void update(Graphics2D backLayer, Graphics2D midLayer, Graphics2D frontLayer, Graphics2D uiLayer,
 			JFrame window) {
 		for (String key : gd.imageStorage.keySet()) {
-			backLayer.drawImage(gd.imageStorage.get(key), 100, 100, window);
+			backLayer.drawImage(gd.imageStorage.get(key), 0, 0, window);
 		}
 		
-		backLayer.drawString(Input.DIR8.name(), 100, 100);
+		backLayer.drawString(Input.DIR8.name(), 0, 0);
 	}
 
 	public void drawKoma(Graphics2D g, JFrame w, BufferedImage image, int wblock, int hblock, int index, double x,

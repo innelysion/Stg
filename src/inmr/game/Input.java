@@ -1,6 +1,5 @@
 package inmr.game;
 
-import java.awt.Insets;
 import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -23,15 +22,10 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 	private boolean MLCR, MMCR, MRCR;
 	private boolean left_first = false;
 	private boolean right_first = false;
-	private Insets insets;
-
-	Input(Insets i) {
-		insets = i;
-	}
 
 	public void update(JFrame w) {
-		MX = MouseInfo.getPointerInfo().getLocation().x - w.getLocationOnScreen().x - insets.left;
-		MY = MouseInfo.getPointerInfo().getLocation().y - w.getLocationOnScreen().y - insets.top;
+		MX = MouseInfo.getPointerInfo().getLocation().x - w.getLocationOnScreen().x - w.getInsets().left;
+		MY = MouseInfo.getPointerInfo().getLocation().y - w.getLocationOnScreen().y - w.getInsets().top;
 	}
 
 	private void dirCheck() {
