@@ -6,37 +6,39 @@ public abstract class StgObjects {
 
 	private int unit = 0;
 	// Image
-	public String resName;
-	public int wBlock = -1;
-	public int hBlock = -1;
-	public boolean active = true;
-	public DrawLayer layer = DrawLayer.Mid;
-	public ArrayList<Integer> index = new ArrayList<Integer>();
+	String resName;
+	int wBlock = -1;
+	int hBlock = -1;
+	boolean active = true;
+	DrawLayer layer = DrawLayer.Mid;
+	ArrayList<Integer> index = new ArrayList<Integer>();
 	// Position
-	public ArrayList<Boolean> visible = new ArrayList<Boolean>();
-	public ArrayList<Float> opacity = new ArrayList<Float>();
-	public ArrayList<Double> dX = new ArrayList<Double>();
-	public ArrayList<Double> dY = new ArrayList<Double>();
+	ArrayList<Boolean> visible = new ArrayList<Boolean>();
+	ArrayList<Float> opacity = new ArrayList<Float>();
+	ArrayList<Double> dX = new ArrayList<Double>();
+	ArrayList<Double> dY = new ArrayList<Double>();
 	// Motion
-	public ArrayList<Double> spdX = new ArrayList<Double>();
-	public ArrayList<Double> spdY = new ArrayList<Double>();
-	public ArrayList<Double> accX = new ArrayList<Double>();
-	public ArrayList<Double> accY = new ArrayList<Double>();
-	public ArrayList<Double> angle = new ArrayList<Double>();
-	public ArrayList<Double> rotation = new ArrayList<Double>();
+	ArrayList<Double> spdX = new ArrayList<Double>();
+	ArrayList<Double> spdY = new ArrayList<Double>();
+	ArrayList<Double> accX = new ArrayList<Double>();
+	ArrayList<Double> accY = new ArrayList<Double>();
+	ArrayList<Double> angle = new ArrayList<Double>();
+	ArrayList<Double> rotation = new ArrayList<Double>();
 	// Hit
-	public ArrayList<Boolean> hitable = new ArrayList<Boolean>();
-	public ArrayList<Integer> sizeW = new ArrayList<Integer>();
-	public ArrayList<Integer> sizeH = new ArrayList<Integer>();
-	public ArrayList<Integer> roundHitRad = new ArrayList<Integer>();
-	public ArrayList<Integer> boxHitW = new ArrayList<Integer>();
-	public ArrayList<Integer> boxHitH = new ArrayList<Integer>();
+	ArrayList<Boolean> hitable = new ArrayList<Boolean>();
+	ArrayList<Integer> sizeW = new ArrayList<Integer>();
+	ArrayList<Integer> sizeH = new ArrayList<Integer>();
+	ArrayList<Integer> boxHitW = new ArrayList<Integer>();
+	ArrayList<Integer> boxHitH = new ArrayList<Integer>();
 
 	StgObjects() {
 		addUnit(1);
+		setObjInfo();
 	}
 
-	public void kill(int i) {
+	abstract void setObjInfo();
+
+	void kill(int i) {
 		if (i < unit) {
 			index.set(i, -1);
 			visible.set(i, false);
@@ -52,13 +54,12 @@ public abstract class StgObjects {
 			hitable.set(i, false);
 			sizeW.set(i, 0);
 			sizeH.set(i, 0);
-			roundHitRad.set(i, 0);
 			boxHitW.set(i, 0);
 			boxHitH.set(i, 0);
 		}
 	}
 
-	public void addUnit(int qty) {
+	void addUnit(int qty) {
 		unit += qty;
 		for (int i = 0; i < qty; i++) {
 			index.add(0);
@@ -75,17 +76,16 @@ public abstract class StgObjects {
 			hitable.add(false);
 			sizeW.add(0);
 			sizeH.add(0);
-			roundHitRad.add(0);
 			boxHitW.add(0);
 			boxHitH.add(0);
 		}
 	}
-	
-	public int getUnitNumber(){
+
+	int getUnitNumber(){
 		return unit;
 	}
 
-	public void move(int i, MoveType type) {
+	void move(int i, MoveType type) {
 		switch (type.ordinal()) {
 		case 0:
 			spdX.set(i, spdX.get(i) + accX.get(i));

@@ -13,15 +13,15 @@ import java.util.jar.JarFile;
 import javax.imageio.ImageIO;
 
 public class GameData {
-	
+
 	private final String path = "image/base";
 	HashMap<String, BufferedImage> imageStorage = new HashMap<String, BufferedImage>();
-	
+
 	GameData(){
 		loadResource();
 	}
-	
-	public void loadResource() {
+
+	void loadResource() {
 		ArrayList<String> imgres = new ArrayList<String>();
 		try {
 			String p = URLDecoder.decode(getClass().getProtectionDomain().getCodeSource().getLocation().getPath(),
@@ -46,9 +46,6 @@ public class GameData {
 			e.printStackTrace();
 		}
 	}
-	
-	public void getData(){
-		
-	}
+
 
 }

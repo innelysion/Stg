@@ -1,43 +1,49 @@
 package inmr.game;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class GameGraphics {
 
-	GameData gd;
-	private ArrayList<StgObjects> drawlist = new ArrayList<StgObjects>();
-	
-	public void setGameData(GameData gamedata){
+	private GameData gd;
+	private BufferedImage player;
+	ArrayList<StgObjects> drawlist = new ArrayList<StgObjects>();
+
+	void setGameData(GameData gamedata) {
 		gd = gamedata;
 	}
 
-	public void update(Graphics2D backLayer, Graphics2D midLayer, Graphics2D frontLayer, Graphics2D uiLayer,
-			JFrame window) {
+	void update(Graphics2D backLayer, Graphics2D midLayer, Graphics2D frontLayer, Graphics2D uiLayer, JFrame window) {
 
 		for (String key : gd.imageStorage.keySet()) {
 			backLayer.drawImage(gd.imageStorage.get(key), 0, 0, window);
 		}
 
-		uiLayer.drawString(Input.DIR8.name(), 900, 100);
-		
+		for (StgObjects obj : drawlist) {
+			switch (obj.getClass().getSimpleName()) {
+			case "StgPlayer":
+				drawKoma(midLayer, window, //
+						gd.imageStorage.get(obj.resName), obj.wBlock, obj.hBlock, obj.index.get(0), //
+						obj.dX.get(0).intValue() - obj.sizeW.get(0) / 2, //
+						obj.dY.get(0).intValue() - obj.sizeH.get(0) / 2, //
+						obj.opacity.get(0));//
+				midLayer.setColor(Color.RED);
+				midLayer.drawRect(obj.dX.get(0).intValue() - obj.sizeW.get(0) / 2, //
+						obj.dY.get(0).intValue() - obj.sizeH.get(0) / 2, //
+						obj.sizeW.get(0), obj.sizeH.get(0));
+				break;
+			}
+		}
+
 	}
 
-	public void drawKoma(Graphics2D g, JFrame w, BufferedImage image, int wblock, int hblock, int index, double x,
-			double y, float opacity) {
+	void drawKoma(Graphics2D g, JFrame w, BufferedImage image, int wblock, int hblock, int index, double x, double y,
+			float opacity) {
 
 		// 一コマの幅をゲット
 		int blockW = image.getWidth() / wblock;
