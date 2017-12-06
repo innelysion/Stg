@@ -5,7 +5,7 @@ public class StgEnemy extends StgObjects{
 	StgEnemy(int id) {
 	}
 
-	void setObjInfo() {
+	protected void setObjInfo() {
 
 	}
 

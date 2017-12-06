@@ -2,10 +2,7 @@ package inmr.game;
 
 public class StgPlayer extends StgObjects {
 
-	StgPlayer() {
-	}
-
-	void setObjInfo() {
+	protected void setObjInfo() {
 		resName = "player.png";
 		wBlock = 5;
 		hBlock = 5;

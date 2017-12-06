@@ -36,7 +36,7 @@ public abstract class StgObjects {
 		setObjInfo();
 	}
 
-	abstract void setObjInfo();
+	protected abstract void setObjInfo();
 
 	void kill(int i) {
 		if (i < unit) {
