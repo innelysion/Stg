@@ -2,11 +2,11 @@ package inmr.game;
 
 public class StgBoss extends StgObjects{
 
-	StgBoss(int id) {
+	StgBoss() {
+		super(1);
 	}
 
-	void setObjInfo() {
-		// TODO 自動生成されたメソッド・スタブ
+	protected void setObjInfo() {
 
 	}
 

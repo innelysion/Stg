@@ -1,7 +1,6 @@
 package inmr.game;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -25,18 +24,30 @@ public class GameGraphics {
 		}
 
 		for (StgObjects obj : drawlist) {
-			switch (obj.getClass().getSimpleName()) {
-			case "StgPlayer":
-				drawKoma(midLayer, window, //
-						gd.imageStorage.get(obj.resName), obj.wBlock, obj.hBlock, obj.index.get(0), //
-						obj.dX.get(0).intValue() - obj.sizeW.get(0) / 2, //
-						obj.dY.get(0).intValue() - obj.sizeH.get(0) / 2, //
-						obj.opacity.get(0));//
-				midLayer.setColor(Color.RED);
-				midLayer.drawRect(obj.dX.get(0).intValue() - obj.sizeW.get(0) / 2, //
-						obj.dY.get(0).intValue() - obj.sizeH.get(0) / 2, //
-						obj.sizeW.get(0), obj.sizeH.get(0));
-				break;
+			for (int i = 0; i < obj.max; i++) {
+				Graphics2D drawlayer = null;
+				switch (obj.layer) {
+				case Back:
+					drawlayer = backLayer;
+					break;
+				case Mid:
+					drawlayer = midLayer;
+					break;
+				case Front:
+					drawlayer = frontLayer;
+					break;
+				case UI:
+					drawlayer = uiLayer;
+					break;
+				default:
+					drawlayer = midLayer;
+					break;
+				}
+				drawKoma(drawlayer, window, //
+						gd.imageStorage.get(obj.resName), obj.wBlock, obj.hBlock, obj.index[i], //
+						(int) obj.dX[i] - obj.sizeW[i] / 2, //
+						(int) obj.dY[i] - obj.sizeH[i] / 2, //
+						obj.opacity[i]);//
 			}
 		}
 

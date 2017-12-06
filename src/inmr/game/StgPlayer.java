@@ -2,13 +2,14 @@ package inmr.game;
 
 public class StgPlayer extends StgObjects {
 
-	protected void setObjInfo() {
+	StgPlayer(){
+		super(1);
 		resName = "player.png";
 		wBlock = 5;
 		hBlock = 5;
-		index.set(0, 1);
-		sizeW.set(0, 32);
-		sizeH.set(0, 32);
+		index[0] = 1;
+		sizeW[0] = 32;
+		sizeH[0] = 32;
 	}
 
 	void update() {
@@ -16,15 +17,15 @@ public class StgPlayer extends StgObjects {
 	}
 
 	private void playerControl() {
-		if (Math.abs(dX.get(0) - Input.MX) < 2) {
-			dX.set(0, (double) Input.MX);
+		if (Math.abs(dX[0] - Input.MX) < 2) {
+			dX[0] = Input.MX;
 		} else {
-			dX.set(0, dX.get(0) + (Input.MX - dX.get(0)) / 4);
+			dX[0] += (Input.MX - dX[0]) / 4;
 		}
-		if (Math.abs(dY.get(0) - Input.MY) < 2) {
-			dY.set(0, (double) Input.MY);
+		if (Math.abs(dY[0] - Input.MY) < 2) {
+			dY[0] = Input.MY;
 		} else {
-			dY.set(0, dY.get(0) + (Input.MY - dY.get(0)) / 4);
+			dY[0] += (Input.MY - dY[0]) / 4;
 		}
 	}
 }

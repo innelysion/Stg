@@ -20,7 +20,7 @@ public class GameMain {
 		// 防止第一帧图像缓存器中线程出错
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				GameMain Game = new GameMain();
+				GameMain start = new GameMain();
 			}
 		});
 	}
@@ -42,10 +42,8 @@ public class GameMain {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.setVisible(true);
-		Image image = Toolkit.getDefaultToolkit().createImage(
-			    new MemoryImageSource(0, 0, new int[0], 0, 0));
-		window.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(image,
-			    new Point(0, 0), null));
+		Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(0, 0, new int[0], 0, 0));
+		window.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0), null));
 		insets = window.getInsets(); // 获取边框
 		int sizeW = GameSetting.WINDOW_W + insets.left + insets.right;
 		int sizeH = GameSetting.WINDOW_H + insets.top + insets.bottom;
