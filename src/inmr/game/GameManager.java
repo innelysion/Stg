@@ -17,7 +17,6 @@ public class GameManager {
 	GameManager() {
 		gg.setGameData(gd);
 	}
-
 	public void updateLogic(){
 		player.update();
 	}

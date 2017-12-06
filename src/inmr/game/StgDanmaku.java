@@ -6,7 +6,4 @@ public class StgDanmaku extends StgObjects{
 		super(GameSetting.DANMAKU_MAX);
 	}
 
-	protected void setObjInfo() {
-	}
-
 }
