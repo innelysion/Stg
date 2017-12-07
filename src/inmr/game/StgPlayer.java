@@ -4,12 +4,13 @@ public class StgPlayer extends StgObjects {
 
 	StgPlayer(){
 		super(1);
+		super.reset(0);
 		resName = "player.png";
 		wBlock = 5;
 		hBlock = 5;
-		index[0] = 1;
-		sizeW[0] = 32;
-		sizeH[0] = 32;
+		imageIndex[0] = 1;
+		size[0] = new int[]{2, 64, 64};
+		hitable[0] = true;
 	}
 
 	void update() {

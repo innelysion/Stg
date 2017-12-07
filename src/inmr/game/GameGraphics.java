@@ -1,6 +1,7 @@
 package inmr.game;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -9,19 +10,28 @@ import javax.swing.JFrame;
 
 public class GameGraphics {
 
+	private int scene;
+	private int timerMain = 0;
+
 	private GameData gd;
-	private BufferedImage player;
+	private Graphics2D backLayer, midLayer, frontLayer, uiLayer;
+	private JFrame window;
 	ArrayList<StgObjects> drawlist = new ArrayList<StgObjects>();
 
 	void setGameData(GameData gamedata) {
 		gd = gamedata;
 	}
 
-	void update(Graphics2D backLayer, Graphics2D midLayer, Graphics2D frontLayer, Graphics2D uiLayer, JFrame window) {
+	void update(int s, Graphics2D bl, Graphics2D ml, Graphics2D fl, Graphics2D ul, JFrame win) {
 
-		for (String key : gd.imageStorage.keySet()) {
-			backLayer.drawImage(gd.imageStorage.get(key), 0, 0, window);
-		}
+		scene = s;
+		backLayer = bl;
+		midLayer = ml;
+		frontLayer = fl;
+		uiLayer = ul;
+		window = win;
+
+		imageEffects();
 
 		for (StgObjects obj : drawlist) {
 			for (int i = 0; i < obj.max; i++) {
@@ -43,14 +53,29 @@ public class GameGraphics {
 					drawlayer = midLayer;
 					break;
 				}
+
+				int x = (int) obj.dX[i];
+				int y = (int) obj.dY[i];
+				int w = obj.size[i][1];
+				int h = obj.size[i][2];
 				drawKoma(drawlayer, window, //
-						gd.imageStorage.get(obj.resName), obj.wBlock, obj.hBlock, obj.index[i], //
-						(int) obj.dX[i] - obj.sizeW[i] / 2, //
-						(int) obj.dY[i] - obj.sizeH[i] / 2, //
+						gd.imageStorage.get(obj.resName), obj.wBlock, obj.hBlock, obj.imageIndex[i], //
+						x - w / 2, y - h / 2, //
 						obj.opacity[i]);//
+				drawlayer.setColor(Color.red);
+				if (obj.hitable[i]) {
+					if (obj.size[i][0] == 1) {
+						drawlayer.drawRect(x - w / 2, y - h / 2, w, h);
+					} else if (obj.size[i][0] == 2) {
+						drawlayer.drawArc(x - w / 2, y - h / 2, w, h, 0, 360);
+					}
+				}
 			}
 		}
 
+	}
+
+	private void imageEffects() {
 	}
 
 	void drawKoma(Graphics2D g, JFrame w, BufferedImage image, int wblock, int hblock, int index, double x, double y,

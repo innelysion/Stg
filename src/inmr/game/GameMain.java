@@ -2,12 +2,8 @@ package inmr.game;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
-import java.awt.image.MemoryImageSource;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,8 +38,8 @@ public class GameMain {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.setVisible(true);
-		Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(0, 0, new int[0], 0, 0));
-		window.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0), null));
+//		Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(0, 0, new int[0], 0, 0));
+//		window.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0), null));
 		insets = window.getInsets(); // 获取边框
 		int sizeW = GameSetting.WINDOW_W + insets.left + insets.right;
 		int sizeH = GameSetting.WINDOW_H + insets.top + insets.bottom;

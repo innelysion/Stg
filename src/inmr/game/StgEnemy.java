@@ -9,6 +9,18 @@ public class StgEnemy extends StgObjects {
 
 	StgEnemy() {
 		super(GameSetting.ENEMY_MAX);
+		for (int i = 0; i < max; i++) {
+			reset(i);
+		}
+		resName = "player.png";
+		wBlock = 5;
+		hBlock = 5;
+		// TEST
+		dX[0] = 500;
+		dY[0] = 500;
+		imageIndex[0] = 5;
+		hitable[0] = true;
+		size[0] = new int[]{2, 32, 32};
 	}
 
 	void update() {
@@ -28,6 +40,14 @@ public class StgEnemy extends StgObjects {
 		shootReq[i] = 0;
 	}
 
+	void copy(int from, int to) {
+		super.copy(from, to);
+		lifetime[to] = lifetime[from];
+		type[to] = type[from];
+		action[to] = action[from];
+		shootReq[to] = shootReq[from];
+	}
+
 	private int findAnIdle() {
 		for (int i = 0; i < max; i++) {
 			if (action[i] == 0) {
@@ -37,8 +57,8 @@ public class StgEnemy extends StgObjects {
 		return max;
 	}
 
-	private void act(int index) {
-		int a = EnemyData.ACTION_LIST[type[index]][action[index]];
+	private void act(int i) {
+		int a = EnemyData.ACTION_LIST[type[i]][action[i]];
 
 	}
 }

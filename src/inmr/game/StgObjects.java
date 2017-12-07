@@ -2,15 +2,14 @@ package inmr.game;
 
 public abstract class StgObjects {
 
-	private int unit = 0;
-	// Image
+	// ImageResource
 	String resName;
 	int wBlock = -1;
 	int hBlock = -1;
 	boolean active = true;
 	DrawLayer layer = DrawLayer.Mid;
 	int max;
-	int[] index;
+	int[] imageIndex;
 	// Position
 	boolean[] visible;
 	float[] opacity;
@@ -25,14 +24,11 @@ public abstract class StgObjects {
 	double[] m_rotation;
 	// Hit
 	boolean[] hitable;
-	int[] sizeW;
-	int[] sizeH;
-	int[] boxHitW;
-	int[] boxHitH;
+	int[][] size;
 
 	StgObjects(int m) {
 		max = m;
-		index = new int[max];
+		imageIndex = new int[max];
 		visible = new boolean[max];
 		opacity = new float[max];
 		dX = new double[max];
@@ -44,18 +40,12 @@ public abstract class StgObjects {
 		m_angle = new double[max];
 		m_rotation = new double[max];
 		hitable = new boolean[max];
-		sizeW = new int[max];
-		sizeH = new int[max];
-		boxHitW = new int[max];
-		boxHitH = new int[max];
-		for (int i = 0; i < max; i++) {
-			reset(i);
-		}
+		size = new int[max][3];
 	}
 
 	void reset(int i) {
 		if (i >= 0 && i < max) {
-			index[i] = 0;
+			imageIndex[i] = 0;
 			visible[i] = true;
 			opacity[i] = 1.0f;
 			dX[i] = -9999;
@@ -67,10 +57,29 @@ public abstract class StgObjects {
 			m_angle[i] = 0;
 			m_rotation[i] = 0;
 			hitable[i] = false;
-			sizeW[i] = 0;
-			sizeH[i] = 0;
-			boxHitW[i] = 0;
-			boxHitH[i] = 0;
+			for (int parm : size[i]) {
+				parm = 0;
+			}
+		}
+	}
+
+	void copy(int from, int to) {
+		if (from >= 0 && from < max && to >= 0 && to < max) {
+			imageIndex[to] = imageIndex[from];
+			visible[to] = visible[from];
+			opacity[to] = opacity[from];
+			dX[to] = dX[from];
+			dY[to] = dY[from];
+			spdX[to] = spdX[from];
+			spdY[to] = spdY[from];
+			accX[to] = accX[from];
+			accY[to] = accY[from];
+			m_angle[to] = m_angle[from];
+			m_rotation[to] = m_rotation[from];
+			hitable[to] = hitable[from];
+			size[to][0] = size[from][0];
+			size[to][1] = size[from][1];
+			size[to][2] = size[from][3];
 		}
 	}
 
@@ -93,6 +102,7 @@ public abstract class StgObjects {
 			break;
 		}
 	}
+
 }
 
 enum MoveType {
