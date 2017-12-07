@@ -43,9 +43,11 @@ public class GameManager {
 	}
 
 	private boolean hit(StgObjects oa, int ia, StgObjects ob, int ib) {
+		// 不可碰撞或体积为0的情况
 		if (!oa.hitable[ia] || !ob.hitable[ib] || oa.size[ia][0] == 0 || ob.size[ib][0] == 0) {
 			return false;
 		}
+		// 碰撞数据中间变量
 		boolean a_is_circle = oa.size[ia][0] > 0 && oa.size[ia][1] == 0 ? true : false;
 		boolean b_is_circle = ob.size[ib][0] > 0 && ob.size[ib][1] == 0 ? true : false;
 		double xa = oa.dX[ia];
@@ -56,6 +58,8 @@ public class GameManager {
 		double yb = ob.dY[ib];
 		double wb = ob.size[ib][0];
 		double hb = ob.size[ib][1];
+		// 是矩形则以左上角坐标计算
+		// 是圆则只取w值,并除2作为半径
 		xa = a_is_circle ? xa : xa - wa / 2;
 		ya = a_is_circle ? ya : ya - ha / 2;
 		wa = a_is_circle ? wa / 2 : wa;
@@ -63,24 +67,31 @@ public class GameManager {
 		yb = b_is_circle ? yb : yb - hb / 2;
 		wb = b_is_circle ? wb / 2 : wb;
 
+		// 执行碰撞检测
 		if (a_is_circle && b_is_circle) {
-			return hitCircle(xa, ya, xb, yb, wa, wb);
-		} else if (a_is_circle && !b_is_circle) {
-			return hitBetweenCircleAndRect(xb + wb / 2, yb + hb / 2, wb, hb, xa, ya, wa);
+			// 两者都是圆
+			return circleHitCircle(xa, ya, xb, yb, wa, wb);
+		} else if (!a_is_circle && !b_is_circle) {
+			// 两者都是矩形
+			return rectHitRect(xa, xb, ya, yb, wa, wb, ha, hb);
 		} else if (!a_is_circle && b_is_circle) {
-			return hitBetweenCircleAndRect(xa + wa / 2, ya + ha / 2, wa, ha, xb, yb, wb);
+			// B为圆A为矩形
+			return rectHitCircle(xa, ya, wa, ha, xb, yb, wb);
 		} else {
-			return hitRect(xa, xb, ya, yb, wa, wb, ha, hb);
+			// A为圆B为矩形
+			return rectHitCircle(xb, yb, wb, hb, xa, ya, wa);
 		}
 	}
 
-	private boolean hitCircle(double xa, double ya, double xb, double yb, double ra, double rb) {
+	// 正圆之间碰撞检测
+	private boolean circleHitCircle(double xa, double ya, double xb, double yb, double ra, double rb) {
 		double rX = Math.pow((xa - xb), 2);
 		double rY = Math.pow((ya - yb), 2);
 		return Math.sqrt(rX + rY) <= ra + rb ? true : false;
 	}
 
-	private boolean hitRect(double xa, double xb, double ya, double yb, double wa, double wb, double ha, double hb) {
+	// 无旋转矩形之间碰撞检测
+	private boolean rectHitRect(double xa, double xb, double ya, double yb, double wa, double wb, double ha, double hb) {
 		if (xa >= xb && xa >= xb + wb) {
 			return false;
 		} else if (xa <= xb && xa + wa <= xb) {
@@ -94,9 +105,10 @@ public class GameManager {
 		}
 	}
 
-	private boolean hitBetweenCircleAndRect(double rx, double ry, double rw, double rh, double cx, double cy, double cr) {
-		double disx = Math.abs(cx - rx);
-		double disy = Math.abs(cy - ry);
+	// 无旋转矩形与正圆之间碰撞检测
+	private boolean rectHitCircle(double rx, double ry, double rw, double rh, double cx, double cy, double cr) {
+		double disx = Math.abs(cx - (rx + rw / 2));
+		double disy = Math.abs(cy - (ry + rh / 2));
 		if (disx > (rw / 2 + cr)) {
 			return false;
 		}
@@ -109,8 +121,8 @@ public class GameManager {
 		if (disy <= (rh / 2)) {
 			return true;
 		}
-		double discor = Math.pow(disx - rw / 2, 2) + Math.pow(disy - rh / 2, 2);
-		return discor <= Math.pow(cr, 2);
+		double discir = Math.pow(disx - rw / 2, 2) + Math.pow(disy - rh / 2, 2);
+		return discir <= Math.pow(cr, 2);
 	}
 
 }
