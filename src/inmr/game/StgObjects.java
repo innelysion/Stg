@@ -40,7 +40,7 @@ public abstract class StgObjects {
 		m_angle = new double[max];
 		m_rotation = new double[max];
 		hitable = new boolean[max];
-		size = new int[max][3];
+		size = new int[max][2];
 	}
 
 	void reset(int i) {
@@ -57,9 +57,8 @@ public abstract class StgObjects {
 			m_angle[i] = 0;
 			m_rotation[i] = 0;
 			hitable[i] = false;
-			for (int parm : size[i]) {
-				parm = 0;
-			}
+			size[i][0] = 0;
+			size[i][1] = 0;
 		}
 	}
 
@@ -79,7 +78,6 @@ public abstract class StgObjects {
 			hitable[to] = hitable[from];
 			size[to][0] = size[from][0];
 			size[to][1] = size[from][1];
-			size[to][2] = size[from][3];
 		}
 	}
 

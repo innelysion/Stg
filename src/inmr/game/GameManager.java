@@ -1,5 +1,6 @@
 package inmr.game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
@@ -38,35 +39,78 @@ public class GameManager {
 		if (hit(player, 0, enemy, 0)) {
 			uiLayer.drawString("HIT!!", 100, 100);
 		}
+		uiLayer.setColor(Color.white);
 	}
 
-	boolean hit(StgObjects oa, int ia, StgObjects ob, int ib) {
+	private boolean hit(StgObjects oa, int ia, StgObjects ob, int ib) {
 		if (!oa.hitable[ia] || !ob.hitable[ib] || oa.size[ia][0] == 0 || ob.size[ib][0] == 0) {
 			return false;
 		}
-		boolean hit = false;
+		boolean a_is_circle = oa.size[ia][0] > 0 && oa.size[ia][1] == 0 ? true : false;
+		boolean b_is_circle = ob.size[ib][0] > 0 && ob.size[ib][1] == 0 ? true : false;
 		double xa = oa.dX[ia];
 		double ya = oa.dY[ia];
-		double wa = oa.size[ia][1];
-		double ha = oa.size[ia][2];
+		double wa = oa.size[ia][0];
+		double ha = oa.size[ia][1];
 		double xb = ob.dX[ib];
 		double yb = ob.dY[ib];
-		double wb = ob.size[ib][1];
-		double hb = ob.size[ib][2];
-		boolean a_is_round = oa.size[ia][0] == 2 ? true : false;
-		boolean b_is_round = ob.size[ib][0] == 2 ? true : false;
-		if (a_is_round && b_is_round) {
-			double rX = Math.pow(((xa + wa) - (xb + wb)), 2);
-			double rY = Math.pow(((ya + wa) - (yb + wb)), 2);
-			hit = Math.sqrt(rX + rY) <= wa / 2 + wb / 2 ? true : false;
-		} else if (a_is_round && !b_is_round) {
+		double wb = ob.size[ib][0];
+		double hb = ob.size[ib][1];
+		xa = a_is_circle ? xa : xa - wa / 2;
+		ya = a_is_circle ? ya : ya - ha / 2;
+		wa = a_is_circle ? wa / 2 : wa;
+		xb = b_is_circle ? xb : xb - wb / 2;
+		yb = b_is_circle ? yb : yb - hb / 2;
+		wb = b_is_circle ? wb / 2 : wb;
 
-		} else if (!a_is_round && b_is_round) {
-
+		if (a_is_circle && b_is_circle) {
+			return hitCircle(xa, ya, xb, yb, wa, wb);
+		} else if (a_is_circle && !b_is_circle) {
+			return hitBetweenCircleAndRect(xb + wb / 2, yb + hb / 2, wb, hb, xa, ya, wa);
+		} else if (!a_is_circle && b_is_circle) {
+			return hitBetweenCircleAndRect(xa + wa / 2, ya + ha / 2, wa, ha, xb, yb, wb);
 		} else {
-
+			return hitRect(xa, xb, ya, yb, wa, wb, ha, hb);
 		}
-		return hit;
+	}
+
+	private boolean hitCircle(double xa, double ya, double xb, double yb, double ra, double rb) {
+		double rX = Math.pow((xa - xb), 2);
+		double rY = Math.pow((ya - yb), 2);
+		return Math.sqrt(rX + rY) <= ra + rb ? true : false;
+	}
+
+	private boolean hitRect(double xa, double xb, double ya, double yb, double wa, double wb, double ha, double hb) {
+		if (xa >= xb && xa >= xb + wb) {
+			return false;
+		} else if (xa <= xb && xa + wa <= xb) {
+			return false;
+		} else if (ya >= yb && ya >= yb + hb) {
+			return false;
+		} else if (ya <= yb && ya + ha <= yb) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	private boolean hitBetweenCircleAndRect(double rx, double ry, double rw, double rh, double cx, double cy, double cr) {
+		double disx = Math.abs(cx - rx);
+		double disy = Math.abs(cy - ry);
+		if (disx > (rw / 2 + cr)) {
+			return false;
+		}
+		if (disy > (rh / 2 + cr)) {
+			return false;
+		}
+		if (disx <= (rw / 2)) {
+			return true;
+		}
+		if (disy <= (rh / 2)) {
+			return true;
+		}
+		double discor = Math.pow(disx - rw / 2, 2) + Math.pow(disy - rh / 2, 2);
+		return discor <= Math.pow(cr, 2);
 	}
 
 }

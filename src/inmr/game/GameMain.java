@@ -56,8 +56,8 @@ public class GameMain {
 		window.addKeyListener(input);
 		window.addMouseWheelListener(input);
 
-		// 间隔17毫秒(近似60fps)主循环
-		timer.schedule(loop, 17, 17);
+		// 间隔16毫秒(近似60fps)主循环
+		timer.schedule(loop, 16, 16);
 	}
 
 	class MainLoop extends TimerTask {

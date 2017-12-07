@@ -9,7 +9,7 @@ public class StgPlayer extends StgObjects {
 		wBlock = 5;
 		hBlock = 5;
 		imageIndex[0] = 1;
-		size[0] = new int[]{2, 64, 64};
+		size[0] = new int[]{128, 0};
 		hitable[0] = true;
 	}
 

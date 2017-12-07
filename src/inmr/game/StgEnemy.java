@@ -20,7 +20,7 @@ public class StgEnemy extends StgObjects {
 		dY[0] = 500;
 		imageIndex[0] = 5;
 		hitable[0] = true;
-		size[0] = new int[]{2, 32, 32};
+		size[0] = new int[]{256, 96};
 	}
 
 	void update() {
