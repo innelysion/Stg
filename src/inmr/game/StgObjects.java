@@ -11,7 +11,7 @@ public abstract class StgObjects {
 	int max;
 	int[] imageIndex;
 	// Position
-	boolean[] visible;
+	boolean[] visotherindexle;
 	float[] opacity;
 	double[] dX;
 	double[] dY;
@@ -29,7 +29,7 @@ public abstract class StgObjects {
 	StgObjects(int m) {
 		max = m;
 		imageIndex = new int[max];
-		visible = new boolean[max];
+		visotherindexle = new boolean[max];
 		opacity = new float[max];
 		dX = new double[max];
 		dY = new double[max];
@@ -46,7 +46,7 @@ public abstract class StgObjects {
 	void reset(int i) {
 		if (i >= 0 && i < max) {
 			imageIndex[i] = 0;
-			visible[i] = true;
+			visotherindexle[i] = true;
 			opacity[i] = 1.0f;
 			dX[i] = -9999;
 			dY[i] = -9999;
@@ -65,7 +65,7 @@ public abstract class StgObjects {
 	void copy(int from, int to) {
 		if (from >= 0 && from < max && to >= 0 && to < max) {
 			imageIndex[to] = imageIndex[from];
-			visible[to] = visible[from];
+			visotherindexle[to] = visotherindexle[from];
 			opacity[to] = opacity[from];
 			dX[to] = dX[from];
 			dY[to] = dY[from];
@@ -99,6 +99,85 @@ public abstract class StgObjects {
 			m_angle[i] += m_rotation[i];
 			break;
 		}
+	}
+
+	public boolean hit(int thisindex, StgObjects others, int otherindex) {
+		// 不可碰撞或体积为0的情况
+		if (!this.hitable[thisindex] || !others.hitable[otherindex] || this.size[thisindex][0] == 0
+				|| others.size[otherindex][0] == 0) {
+			return false;
+		}
+		// 中间变量
+		boolean a_is_circle = this.size[thisindex][0] > 0 && this.size[thisindex][1] == 0 ? true : false; // 碰撞判定是圆形还是矩形
+		boolean b_is_circle = others.size[otherindex][0] > 0 && others.size[otherindex][1] == 0 ? true : false;
+		double xa = this.dX[thisindex]; // 中心x坐标
+		double ya = this.dY[thisindex]; // 中心y坐标
+		double wa = this.size[thisindex][0]; // 宽
+		double ha = this.size[thisindex][1]; // 高
+		double xb = others.dX[otherindex];
+		double yb = others.dY[otherindex];
+		double wb = others.size[otherindex][0];
+		double hb = others.size[otherindex][1];
+		// 执行碰撞检测
+		if (a_is_circle && b_is_circle) {
+			// 两者都是圆
+			return circleHitCircle(xa, ya, xb, yb, wa / 2, wb / 2);
+		} else if (!a_is_circle && !b_is_circle) {
+			// 两者都是矩形
+			return rectHitRect(xa, xb, ya, yb, wa, wb, ha, hb);
+		} else if (!a_is_circle && b_is_circle) {
+			// B为圆A为矩形
+			return rectHitCircle(xa, ya, wa / 2, ha / 2, xb, yb, wb / 2);
+		} else {
+			// A为圆B为矩形
+			return rectHitCircle(xb, yb, wb / 2, hb / 2, xa, ya, wa / 2);
+		}
+	}
+
+	// 正圆之间碰撞检测
+	private boolean circleHitCircle(double xa, double ya, double xb, double yb, double ra, double rb) {
+		double disx = Math.pow((xa - xb), 2);
+		double disy = Math.pow((ya - yb), 2);
+		return Math.sqrt(disx + disy) <= ra + rb ? true : false;
+	}
+
+	// 无旋转矩形之间碰撞检测
+	private boolean rectHitRect(double xa, double xb, double ya, double yb, double wa, double wb, double ha,
+			double hb) {
+		if (xa >= xb && xa >= xb + wb) {
+			return false;
+		} else if (xa <= xb && xa + wa <= xb) {
+			return false;
+		} else if (ya >= yb && ya >= yb + hb) {
+			return false;
+		} else if (ya <= yb && ya + ha <= yb) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// 无旋转矩形与正圆之间碰撞检测
+	private boolean rectHitCircle(double rx, double ry, double rw, double rh, double cx, double cy, double cr) {
+		double disx = Math.abs(cx - rx);
+		double disy = Math.abs(cy - ry);
+		// 中心距离大于圆形半径+矩形宽/高的一半的情况
+		if (disx > (rw + cr)) {
+			return false;
+		}
+		if (disy > (rh + cr)) {
+			return false;
+		}
+		// 中心距离小于矩形宽/高的一半的情况
+		if (disx <= rw) {
+			return true;
+		}
+		if (disy <= rh) {
+			return true;
+		}
+		// 圆形位于矩形四角附近的情况
+		double discir = Math.pow(disx - rw, 2) + Math.pow(disy - rh, 2);
+		return discir <= Math.pow(cr, 2);
 	}
 
 }
